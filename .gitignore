@@ -19,3 +19,5 @@ Thumbs.db
 api/.env
 web/.env
 web/revert-before-production/
+submission/
+docs/
