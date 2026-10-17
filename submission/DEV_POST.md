@@ -93,7 +93,7 @@ Where a closed API is worse here: it cannot fit your table, it meters the ask, a
 
 ## My First User
 
-A freelancer I already know. Protocol is in `docs/first-user.md`. Twenty minutes. No signup. They type three jobs or drop a file. They paste one ask they would send this week. They look at the red number.
+A freelancer I already know. Twenty minutes. No signup. They type three jobs or drop a file. They paste one ask they would send this week. They look at the red number.
 
 Three questions, verbatim answers, here after the session on 18 October:
 
