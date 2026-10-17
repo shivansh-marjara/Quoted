@@ -26,9 +26,9 @@ New or ten years in: you start on your own notebook. Type finished jobs or impor
 
 ## Demo
 
-Live pad: *(paste the Render / .tech URL here after deploy)*
+Live pad: https://quoted-32zd.onrender.com
 
-Repo: *(GitHub URL)*
+Repo: https://github.com/shivansh-marjara/Quoted
 
 Open the pad. You land on your own notebook, empty. Add three jobs, or press **See an example notebook** if you want to click around first.
 
@@ -46,7 +46,7 @@ Optional: drop `samples/upload-test.xlsx` under **I have a list of old jobs**.
 
 ## Code
 
-{% github YOUR_GITHUB_USER/quoted %}
+{% github shivansh-marjara/Quoted %}
 
 The split the whole project sits on:
 
@@ -107,3 +107,4 @@ If they did not pay, I will say so.
 
 - Best Use of TabPFN
 - Best Use of Gemma
+- Best Use of Render

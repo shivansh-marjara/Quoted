@@ -1,4 +1,0 @@
-id,kind,pages_or_screens,integrations,revision_rounds,deadline_days,client_repeat,quoted_hours,actual_hours,quoted_fee,actual_fee,title
-1,landing,4,0,2,7,0,12,19,24000,24000,Example: dentist landing that overran
-2,store,10,2,1,21,1,36,38,72000,72000,Example: repeat client store
-3,dashboard,6,1,2,14,0,32,46,64000,64000,Example: tuition dashboard
