@@ -93,14 +93,14 @@ function featureDump(row: QuoteResponse["feature_row"]): string {
     store: "an online shop",
     dashboard: "a control panel",
     mobile: "a phone app",
-    api: "a behind-the-scenes hookup",
+    api: "wiring between systems, not a website",
     brand: "a logo / look",
     other: "something else",
   };
   return [
     `I read this as ${kinds[row.kind] || row.kind}.`,
     `${row.pages_or_screens} pages or screens.`,
-    `${row.integrations} extra tools to hook up.`,
+    `${row.integrations} extra tools to connect.`,
     `They may ask for changes ${row.revision_rounds} time(s).`,
     `They want it in ${row.deadline_days} days.`,
     row.client_repeat ? "You have worked with them before." : "This is a new client.",

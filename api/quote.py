@@ -54,15 +54,19 @@ def analog_quantiles(jobs: list[Job], row: FeatureRow, k: int = 5) -> tuple[floa
 
 def tabpfn_quantiles(jobs: list[Job], row: FeatureRow) -> tuple[float, float, float, str]:
     token = os.environ.get("TABPFN_TOKEN", "").strip()
-    if not token:
+    same = [j for j in jobs if j.kind == row.kind]
+    pool = same if same else jobs
+    # One clinic and a shop is not a table of clinics. TabPFN needs enough
+    # rows of the same kind; otherwise analog uses the clinic, not the shop.
+    if not token or len(pool) < 3:
         return analog_quantiles(jobs, row)
 
     try:
         from tabpfn_client import TabPFNRegressor, set_access_token
 
         set_access_token(token)
-        X = np.array([feature_vector(j) for j in jobs], dtype=float)
-        y = np.array([j.actual_hours for j in jobs], dtype=float)
+        X = np.array([feature_vector(j) for j in pool], dtype=float)
+        y = np.array([j.actual_hours for j in pool], dtype=float)
         x_new = np.array([feature_vector(row)], dtype=float)
         model = TabPFNRegressor.create_default_for_version("v3.5")
         model.fit(X, y)

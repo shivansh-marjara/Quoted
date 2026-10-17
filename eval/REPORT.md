@@ -15,19 +15,21 @@ PRED(25) is the fraction of predictions within 25% of actual effort, the usual n
 | mean | 3114.6 | 2714.1 | 0.152 | 46 |
 | linear | 2013.5 | 1304.3 | 0.348 | 46 |
 | analog | 1972.4 | 1361.5 | 0.261 | 46 |
+| tabpfn-3.5 | 1618.4 | 1058.3 | 0.413 | 46 |
 
 ## Folds
 
-- Year 1986: train 31, test 27, mean MAE 2981, linear MAE 1991, analog MAE 1943
-- Year 1987: train 58, test 14, mean MAE 3397, linear MAE 2422, analog MAE 2378
-- Year 1988: train 72, test 5, mean MAE 3046, linear MAE 988, analog MAE 997
+- Year 1986: train 31, test 27, mean MAE 2981, linear MAE 1991, analog MAE 1943, TabPFN MAE 1554
+- Year 1987: train 58, test 14, mean MAE 3397, linear MAE 2422, analog MAE 2378, TabPFN MAE 1930
+- Year 1988: train 72, test 5, mean MAE 3046, linear MAE 988, analog MAE 997, TabPFN MAE 1096
 
 ## How to read this
 
 The mean baseline quotes the same hours for every project. Linear regression is what a careful freelancer with a spreadsheet would do.
 Analog is 3-nearest-neighbour on standardized features, the method Shepperd used on this same table.
 
-TabPFN-3.5 was not run in this file. Set `TABPFN_TOKEN` and rerun `python eval/backtest.py`.
+Lowest MAE on this split: **tabpfn-3.5** (1618.4). Highest MAE: **mean** (3114.6).
+TabPFN beat the mean baseline on MAE (1618.4 vs 3114.6) and posted PRED(25)=0.413.
 
 ## Source
 

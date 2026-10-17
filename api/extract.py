@@ -22,6 +22,13 @@ kind, pages_or_screens, integrations, revision_rounds, deadline_days, client_rep
 
 Rules:
 - kind must be one of: landing, store, dashboard, mobile, api, brand, other
+- landing: a website people open in a browser (clinic, dentist, physio, one-pager, five pages). A WhatsApp button on a website is still landing.
+- store: selling goods online (Shopify, catalogue, cart).
+- dashboard: a login to see numbers (attendance, admin, ERP screens).
+- mobile: a phone app.
+- api: wiring between systems with no public website (webhooks, endpoints). Not a website that mentions WhatsApp.
+- brand: logo, cards, look.
+- other: everything else.
 - Do not invent hours.
 - Do not invent rupees, dollars, or any fee.
 - Do not include any key other than the six above.
@@ -64,21 +71,61 @@ def _digits(text: str) -> str:
     return t
 
 
+def _looks_like_site(t: str) -> bool:
+    return any(
+        w in t
+        for w in (
+            "website",
+            "webpage",
+            "landing",
+            "one-pager",
+            "one pager",
+            "one-page",
+            "site for",
+            "pages",
+        )
+    )
+
+
+def correct_kind(brief: str, kind: str) -> str:
+    """A public website is a website, even if WhatsApp or 'API' is in the ask."""
+    t = _digits(brief)
+    shop = any(
+        w in t for w in ("shopify", "store", "sku", "catalogue", "catalog", "ecommerce", "e-commerce")
+    )
+    dash = any(w in t for w in ("dashboard", "admin", "erp", "attendance", "inventory"))
+    phone = any(w in t for w in ("android", "ios", "mobile app", "app for"))
+    wiring = any(w in t for w in ("webhook", "endpoint", "json dump"))
+    site = _looks_like_site(t)
+    if shop:
+        return "store"
+    if phone and not site:
+        return "mobile"
+    if dash and not site:
+        return "dashboard"
+    if site and kind in ("api", "other", "mobile"):
+        return "landing"
+    if wiring and not site:
+        return "api"
+    return kind
+
+
 def _rule_based(brief: str) -> FeatureRow:
     t = _digits(brief)
     kind = "other"
     if any(w in t for w in ("shopify", "store", "sku", "catalogue", "catalog", "ecommerce", "e-commerce")):
         kind = "store"
-    elif any(w in t for w in ("dashboard", "admin", "erp", "attendance", "inventory")):
+    elif any(w in t for w in ("dashboard", "admin", "erp", "attendance", "inventory")) and not _looks_like_site(t):
         kind = "dashboard"
-    elif any(w in t for w in ("android", "ios", "mobile app", "app for")):
+    elif any(w in t for w in ("android", "ios", "mobile app", "app for")) and not _looks_like_site(t):
         kind = "mobile"
-    elif any(w in t for w in ("webhook", "api", "razorpay", "sheets to", "bot")):
+    elif _looks_like_site(t):
+        kind = "landing"
+    elif any(w in t for w in ("webhook", "endpoint", "json dump", "sheets to")):
         kind = "api"
     elif any(w in t for w in ("logo", "brand", "visiting card", "menu design")):
         kind = "brand"
-    elif any(w in t for w in ("landing", "one-pager", "one pager", "webpage", "website")):
-        kind = "landing"
+    kind = correct_kind(brief, kind)
 
     def near(patterns: list[str], default: int) -> int:
         for p in patterns:
@@ -176,6 +223,7 @@ def extract_with_gemma(brief: str) -> tuple[FeatureRow, str, dict[str, Any]]:
             "model": model_name,
         }
         row = _from_model_dict(_parse_json_object(text))
+        row = row.model_copy(update={"kind": correct_kind(brief, row.kind)})
         return row, "gemma", usage
     except Exception:
         row = _rule_based(brief)

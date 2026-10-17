@@ -45,6 +45,14 @@ SAMPLE_BRIEFS = [
         ),
     },
     {
+        "id": "physio",
+        "label": "Physio website by Friday",
+        "brief": (
+            "A physiotherapist in Pune wants a small website by Friday. "
+            "Five pages, WhatsApp, two rounds of changes. First time working with them."
+        ),
+    },
+    {
         "id": "sari",
         "label": "Sari shop, three weeks",
         "brief": (
