@@ -1,0 +1,13 @@
+fastapi>=0.115
+uvicorn[standard]>=0.34
+pydantic>=2.11
+python-dotenv>=1.0
+httpx>=0.28
+numpy>=2.0
+scikit-learn>=1.5
+tabpfn-client>=0.1.0
+sentry-sdk[fastapi]>=2.20
+google-genai>=1.0
+python-multipart>=0.0.9
+openpyxl>=3.1
+pandas>=2.1
