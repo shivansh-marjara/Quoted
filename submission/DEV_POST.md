@@ -2,119 +2,120 @@
 
 # You said 10. It took 19.
 
-You are a freelancer. They said the job was small. You said yes. You promised 10 hours. It took 19. You got paid for 10. The other hours were free. That leftover is the product.
+You know this feeling.
 
-I quoted eight thousand rupees for a landing page. It took nineteen hours. I did not invoice the extra. **Quoted** is a notebook of promised vs actual hours so the next number you send is honest. A chatbot does not get to invent the price.
+They said the job was small. You are a freelancer, so you said yes. You promised 10 hours. It took 19. You got paid for 10. The other hours were free. That hurts. Every freelancer has felt this. First year or tenth.
 
-Someone who has already given a week away would pay Rs 499 a month to stop doing that once. The first under-quote they catch pays for the year. My own first sit-down with the live pad did **not** pay. I say that later, in their words.
+I felt it too. I quoted eight thousand rupees for a small website. It took nineteen hours. I did not ask for the extra. I just swallowed it. Then they asked again, and I almost said 10 a second time.
+
+So I made **Quoted**. I am not a chatbot that invents a price. I am a notebook. You write what you promised. You write what it took. I remember. Next time they ask, I stop you.
+
+If you have already given a week away, you might pay Rs 499 a month so you never give the next week away. I sat down with my own live site and asked myself if I would pay. I said no. Not this month. I will tell you that story at the end. I will not make up a friend who said yes.
 
 ## What I Built
 
-Quoted is not a machine that invents a price.
+You and I talk like this.
 
-You write jobs you already finished: what they asked, hours you promised, hours it took, money they paid if you remember. You do not need a spreadsheet. Type three jobs from memory, or drop Excel, a photo of a notebook, a PDF, Word, JSON, or CSV.
+You tell me a job you already finished. What they asked you to do. Hours you promised. Hours it took. What they paid, if you remember. You can leave money blank.
 
-When someone asks for the next job, you paste what they sent.
+You do not need a file. Three jobs from your head is enough. If you have a list — Excel, a photo of paper, a PDF, Word — you can drop it.
 
-Then the split the whole product sits on:
+Then they send you a new ask. You paste it. You press **What should I promise this time?**
 
-```text
-What they asked  →  Gemma reads it     →  six facts. Never hours. Never rupees.
-Finished jobs    →  TabPFN-3.5         →  hours as a band
-hours × your rate →  the number you send
-If the sentence invents a digit, we throw it away
-```
+Here is the rule I will not break:
 
-Gemma (Google's open-weight model, via AI Studio) may only write: what kind of job, how many pages, extra tools, rounds of changes, how soon, have you worked with them. If it tries to pick a price, `api/guard.py` throws the sentence away and keeps the numbers from the table.
+I let Gemma read the ask. Gemma may only say what kind of work it is, how many pages, extra tools, how many rounds of changes, how soon, and whether you know this person. Gemma does not pick hours. Gemma does not pick rupees. If a number sneaks into the sentence that did not come from your jobs, I throw the sentence away.
 
-TabPFN-3.5, Prior Labs' tabular foundation model, fits on your small table — the size of a freelancer's year — and predicts hours at 10 / 50 / 90. Code multiplies the middle by what you actually earn per hour, and rounds to five hundred rupees.
+I let TabPFN look at your finished jobs. TabPFN is built for small tables, the size of a freelancer's year. It tells me how long a job like this really takes you: a low, a middle, a high. I take the middle, times what you actually earn in an hour, and I round to five hundred rupees. That is the number you can send.
 
-New or ten years in: you land on your own empty notebook. Three finished jobs is enough. There is an example notebook if you want to click around first. It is labelled as not yours.
+If you are new, you start empty. If you have been at this ten years, you start empty too. Same notebook. The example jobs are behind a small door, and they say they are not yours.
 
 ## Demo
 
-Live, no signup: [https://quoted-32zd.onrender.com](https://quoted-32zd.onrender.com)
+Come sit with me. No account.
 
-Repo: [https://github.com/shivansh-marjara/Quoted](https://github.com/shivansh-marjara/Quoted)
+Live: [https://quoted-32zd.onrender.com](https://quoted-32zd.onrender.com)
 
-Open the pad. You land on your notebook, empty.
+The code: [https://github.com/shivansh-marjara/Quoted](https://github.com/shivansh-marjara/Quoted)
 
-**The 90-second click (example notebook):**
+If you only have a minute, do this.
 
 1. Open **See how it looks with an example**.
-2. Open **Or try a message they might send** → **Dentist website by Friday**.
+2. Open **Or try a message they might send**, then **Dentist website by Friday**.
 3. Press **What should I promise this time?**
 
-That click fills as **19 hours** (14 to 22) and **₹28,500**. Keep 3 extra hours. The sentence says: *Do not promise less than 19 hours.*
+You should see **19 hours** and **₹28,500**. Keep 3 hours for yourself. The line says: do not promise less than 19 hours.
 
-If the Prior Labs key is set, that click is TabPFN-3.5. Health on the live site is `tabpfn: true`, `gemma: true`. If the key is missing, similar past jobs still fill the stub and the pad says so. I am not going to pretend a key-less demo is TabPFN.
+That dentist click uses TabPFN on the live site. I checked. If TabPFN is missing, I still look at jobs like yours and I tell you I did. I will not pretend.
 
-**Your own jobs:** type three finished ones, or drop `samples/upload-test.xlsx`. Paste what they asked this week. Press the same button.
+If you have three finished jobs of your own, type them. Paste what they asked this week. Press the same button. That is the real talk.
 
 ## How I Built It
 
-**The ask.** Six fields. No hours. No fees. Gemma 3 (`gemma-3-12b-it`) when `GEMINI_API_KEY` is set. If the key is missing, a rule reader fills the same six facts so the pad still works. `eval/ask_eval.py` runs twenty asks and checks that the JSON has exactly those keys.
+I will keep this plain.
 
-This laptop has 4 GB of RAM. It will not host a 12B model. Gemma runs on AI Studio. That sentence belongs here. Pretending it “runs locally” would be the dishonest version of open.
+Gemma reads the ask and writes six facts. Never the money. My laptop has 4 GB of memory. It cannot hold Gemma. So Gemma runs at Google AI Studio. I am saying that out loud. Open weights still matter: I can swap the reader later. I am not going to write “it runs on my machine” when it does not.
 
-**The notebook.** Forty sample jobs of an Indian product freelancer, with real overruns: Friday websites blow up, repeat clients do not. You replace them by typing, or by dropping a file. `api/import_file.py` sniffs Excel, photos, PDF, Word, JSON, CSV.
+TabPFN looks at the hours that already happened. Model 3.5. If there is no TabPFN key, I look at the same kind of job you already did. The pad still fills.
 
-**The hours.** `tabpfn-client`, model `v3.5`. Fit on hours it really took, given those six facts. Predict 0.1, 0.5, 0.9. Fee is the middle hours times the median of (money they paid / hours it took), rounded to 500. If TabPFN is missing, k-NN on the same kind of job fills the stub.
+I test the sentence. Every digit has to come from those hours, the extra hours, your rate, or the fee. Twice it can try. Then I show the raw numbers.
 
-**The sentence.** Any digit in the WhatsApp line must be a rounded form of those hours, the extra hours, the rate, or the fee. Fail once, try again; fail again, drop the prose.
+I also tested “look at jobs like yours” on a public set of old software projects. Looking at similar jobs beat guessing the average, and beat a straight line. The table is in the repo. TabPFN’s row was empty until I had a key. I left it empty. I would rather show a hole than a fake number.
 
-**The backtest.** PROMISE Desharnais, 77 complete software projects, rolling origin by year. Analog MAE 1972 hours, linear 2013, mean 3114, n=46. The table is in `eval/REPORT.md`. TabPFN was empty in that file until the key existed. I left the row empty on purpose rather than fake it.
+The site lives on Render. One box. The notebook you see and the brain behind it go out together. Open `/api/health` if you want to see that TabPFN and Gemma are both on.
 
-**Render.** One Docker web service from `render.yaml`. The image builds the pad and serves FastAPI on the same origin. Live health: `GET /api/health`.
-
-The pad looks like a carbon-copy notebook because that is the object this replaces, not a dashboard.
+The screen looks like paper on purpose. This is a notebook. It is not a dashboard.
 
 ## Why Does Open Innovation Matter?
 
-Closed quote tools want the ask, and they bill per call. After month one you are renting your own memory. A freelancer's history is 20–40 private rows: client names, hours, fees. That table should not be pasted into a closed chat as few-shot text.
+You would not paste last year’s clients into a locked chat just to get a guess. Those rows are names, hours, and what they paid. That is your year.
 
-TabPFN is a foundation model for tables exactly that size. Fit on my rows, emit a band, no per-quote theatre. You cannot get that from a general chat API without uploading every past client's ask. The open tabular weights (and the hosted 3.5 API on the free tier) are what make this a product instead of a demo.
+A closed quote tool wants the ask, then bills you every time. After a month you are renting your own memory.
 
-Gemma's weights are open, so the reader is swappable. Today it is AI Studio because of RAM. The same six-field contract would work on a laptop later. The digit check is only possible because hours come from a model whose output is a short list of numbers. A chatbot quote has no such list.
+TabPFN is open for tables this small. Fit on my jobs. Give me a band. No “upload the whole story as a prompt.” Gemma is open too, so the reader is not glued to one company. The money check only works because the hours come out as a short list of numbers. A chatbot has no such list. It just sounds sure.
 
-Where a closed API is worse here: it cannot fit your table, it meters the ask, and you cannot print a before/after against linear regression on Desharnais because you do not own the weights or the fit.
+That is why I built it this way. Not because “open” looks good in a post. Because I cannot let a sentence invent ₹58,500 when your clinic took 16 hours.
 
 ## My Agent Session
 
-I built Quoted in Cursor. No Entire / DevRelay capture to embed. The repo is the session.
+I built this in Cursor. I do not have a pretty replay to paste. The GitHub repo is the work.
 
 ## My First User
 
-My freelancer friends were busy. I sat with the live pad myself, as the first user, the way the protocol asked: three finished jobs, one ask from this week, then the three questions. I am not going to invent a friend who said yes.
+I asked freelancer friends to sit with me. They were busy. I will not invent them.
 
-**What I typed**
+So I sat with Quoted myself. Three jobs. One new ask. Three questions. Like I promised.
 
-| Job | Promised | Took | Unpaid |
-| --- | --- | --- | --- |
-| Clinic website | 10 | 16 | +6 |
-| Sari shop | 36 | 48 | +12 |
-| Coaching dashboard | 28 | 40 | +12 |
+I wrote:
 
-Unpaid on the pad: **30 hours**. That matched.
+- Clinic website. I said 10. It took 16. I gave away 6.
+- Sari shop. I said 36. It took 48. I gave away 12.
+- Coaching dashboard. I said 28. It took 40. I gave away 12.
 
-Then I pasted: *A physiotherapist in Pune wants a small website by next Friday. Five pages, WhatsApp button, two rounds of changes. I have not worked with them before.*
+The pad said **30 hours unpaid**. That was true. 6 and 12 and 12. For a second I felt seen.
 
-Quoted said: **Do not promise less than 39 hours. Send ₹58,500.** Band 15–51.
+Then I pasted what a new person asked: a physiotherapist in Pune, a small website by Friday, five pages, WhatsApp, two rounds of changes, first time with them.
 
-My last small site was 16 hours. 39 is too big. Gemma had read a small website as “a behind-the-scenes hookup,” so TabPFN looked at the shop and the dashboard, not the clinic.
+Quoted said: do not promise less than **39 hours**. Send **₹58,500**. It might take 15 to 51.
 
-**The three answers, verbatim**
+I sat there. My last small site was 16 hours. 39 is not a small site. That hurt in a different way. I had come for help, and the help was too big.
 
-1. **Would you pay Rs 499 a month for this?**  
-   No. Not this month. I would keep using it for free. I would pay after it quotes a small website like my clinic, not like my shop.
+Gemma had read “small website” as a behind-the-scenes hookup. So TabPFN looked at the shop and the dashboard, not the clinic. That is on me to fix. I am writing it here so you do not think the demo is magic.
+
+I asked myself the three questions. I answered out loud.
+
+1. **Would you pay Rs 499 a month?**  
+   No. Not this month. I would keep it open. I would pay after it talks about my clinic like a clinic, not like a shop.
 
 2. **What did it get wrong?**  
-   It called a small website a hookup and told me 39 hours / ₹58,500. My last small site was 16 hours. The wait on first open also felt unfinished.
+   It called a small website a hookup. It told me 39 hours and ₹58,500. Sixteen was the truth. The first load also sat on a blank red bar. I waited. A freelancer waiting on a quote already feels that wait.
 
 3. **What do you want it to tell you next?**  
-   Which of my jobs it used. “This is like your clinic, not your shop.”
+   Which jobs you used. Say it to me: this is like your clinic, not your shop.
 
-If a freelancer I know sits with it before the deadline, I will replace this with their words. Until then, this is the truth: the idea is payable, this session was not.
+If a real freelancer sits with me before the deadline, I will put their words here instead. Until then, you have mine. The feeling is worth paying for. This one session was not.
+
+I still think you should open the pad. Write three jobs. See your unpaid hours in red. That part already tells the truth. The next promise has to catch up.
 
 ## Prize Categories
 
